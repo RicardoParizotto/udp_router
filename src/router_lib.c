@@ -64,8 +64,7 @@ int ack(unsigned id){
 		if(l->pkg.id == id){
 			if(l->prev) l->prev->next = l->next;
 			if(l->next) l->next->prev = l->prev;
-			if(!l->prev) _list = NULL;
-		//	free(l);
+			if(!l->prev && !l->next) _list = NULL;
 			return 1;
 		}
 		l = l->next;
@@ -105,7 +104,7 @@ void * thread_resend( void * v ){
     si_other.sin_family = AF_INET;
 	
 	while(1){
-		sleep(2);
+		sleep(5); 		//timeout
 		pthread_mutex_lock(&list_mutex);
 		l = _list;
 		while(l){

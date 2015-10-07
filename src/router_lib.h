@@ -7,10 +7,11 @@
 #include <stdio_ext.h>
  
 #define BUFLEN 512  					//Max length of buffer
-#define N_ROT 6
-#define IP_SIZE 16
-#define MAX 1000
+#define N_ROT 6							
+#define IP_SIZE 16						//category
+#define MAX 1000						//max capacity of network
 #define infinity 200000
+#define TIMEOUT 5 						//timeout (sec)
 
 struct package{
 	unsigned id;						//id of package
