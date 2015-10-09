@@ -49,12 +49,12 @@ unsigned short * next_hop(unsigned size, unsigned vertex, unsigned short * paren
 	return hop;
 }
 
-struct list * insert_list(struct list * l, struct package pkg){
+struct list * insert_list(struct package pkg){
 	struct list *new = malloc(sizeof(struct list));
 	new->pkg = pkg;
-	new->next = l;	
+	new->next = _list;	
 	new->prev = NULL;
-	if(l) l->prev = new;
+	if(_list) _list->prev = new;
 	return new;
 }
 
@@ -131,6 +131,7 @@ void * source(void * v){
     while(1){
         scanf("%d %s",&i, pkg->message);
 		pkg->id = message_id++;
+		pkg->att = 0;
 		pkg->source = id;
 		pkg->destiny = i;	
 		pkg->type = 1;
