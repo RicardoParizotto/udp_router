@@ -108,8 +108,13 @@ void * thread_resend( void * v ){
 		pthread_mutex_lock(&list_mutex);
 		l = _list;
 		while(l){
-			_send(si_other, l->pkg.destiny, s, &l->pkg);
-			printf("resend %s\n", l->pkg.message);
+			if(l->pkg.att++ <= 3){
+				_send(si_other, l->pkg.destiny, s, &l->pkg);
+				printf("> Resend package %d.\n", l->pkg.id);
+			}else{
+				ack(l->pkg.id);
+				printf("> Package %d can't reach destiny.\n", l->pkg.id);
+			}
 			l = l->next;
 		}
 		pthread_mutex_unlock(&list_mutex);
@@ -131,13 +136,12 @@ void * source(void * v){
     while(1){
         scanf("%d %s",&i, pkg->message);
 		pkg->id = message_id++;
-		pkg->att = 0;
 		pkg->source = id;
 		pkg->destiny = i;	
-		pkg->type = 1;
+		pkg->type = pkg->att = 1;
 
 		pthread_mutex_lock(&list_mutex); //block call
-		_list = insert_list(_list, *pkg);
+		_list = insert_list(*pkg);
 		pthread_mutex_unlock(&list_mutex);
 
 		_send(si_other, i, s, pkg);
@@ -180,21 +184,16 @@ void destiny( void ){
 
 		fflush(stdout);
 
-		while(l){
-			printf("%d", l->pkg.id);
-			l = l->next;
-		}
-
         //try to receive some data, this is a blocking call
         if ((recv_len = recvfrom(s, pkg, sizeof(struct package), 0, (struct sockaddr *) &si_other, &slen)) == -1)
             die("recvfrom()");
         
-		printf("\nReceived packet from %s: %d\n", inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
+		printf("\n> Received packet from %s: %d\n", inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
 
-		//gambias
+		//packing
 		if(pkg->destiny == id){
 			if(pkg->type == 0){
-				printf("acknowledgment %d\n", pkg->id);
+				printf("> Acknowledgment %d\n", pkg->id);
 				//remove the package from the list
 				pthread_mutex_lock(&list_mutex);
 				ack(pkg->id);
