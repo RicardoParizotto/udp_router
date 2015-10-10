@@ -6,18 +6,18 @@
 #include<pthread.h>
 #include<stdio_ext.h>
  
-#define BUFLEN 512  									//Max length of buffer
-#define N_ROT 6											//network size
-#define IP_SIZE 16										//category
-#define MAX 1000										//max capacity of network
+#define BUFLEN 512  				//Max length of buffer
+#define N_ROT 6					//network size
+#define IP_SIZE 16				//category
+#define MAX 1000				//max capacity of network
 #define infinity 200000
-#define TIMEOUT 5 										//timeout (sec)
+#define TIMEOUT 5 				//timeout (sec)
 
 struct package{
 	unsigned id, att;								
-	char type;											//ack(0) or data(1)
-	unsigned source, destiny;							//router's id
-	char message[BUFLEN];								//message
+	char type;				//ack(0) or data(1)
+	unsigned source, destiny;		//router's id
+	char message[BUFLEN];			//message
 };
 
 struct list{
@@ -29,15 +29,15 @@ static pthread_mutex_t list_mutex = PTHREAD_MUTEX_INITIALIZER;         //thread 
 
 int message_id;								//id of message ( auto increment when send )
 
-int id;										//id router
+int id;									//router's id
 
 unsigned short ports[N_ROT + 1];			//network information
 
-unsigned short *nextHop;					//store all the next hops
+unsigned short *nextHop;				//store all the next hops
 
-char ips[N_ROT + 1][16];					//network information
+char ips[N_ROT + 1][16];				//network information
 
-struct list *_list;							//waiting for ack list
+struct list *_list;					//waiting for ack list
 
 
 
