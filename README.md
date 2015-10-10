@@ -1,7 +1,9 @@
 UNIVERSIDADE FEDERAL DA FRONTEIRA SUL
   
-  RICARDO PARIZOTTO
-  ricardo.dparizotto@gmail.com
+  RICARDO PARIZOTTO 
+  
+  ricardo.dparizotto@gmail.com  
+  
   Redes de computadores - Trabalho 1
   
 Roteador que envia e recebe mensagens usando sockets UDP, porém, tem garantia de entrega de pacotes.
